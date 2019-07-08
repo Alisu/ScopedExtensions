@@ -32,7 +32,9 @@ RPackageExtensions class >> initialize [
 
 { #category : #'as yet unclassified' }
 RPackageExtensions class >> packageUnregistered: aPackageUnregisteredAnnouncement [
-	(instances removeKey: aPackageUnregisteredAnnouncement package ifAbsent: [ ^ self ]) delete
+	| extension |
+	extension := (instances removeKey: aPackageUnregisteredAnnouncement package ifAbsent: [ ^ self ]).
+	extension delete
 ]
 
 { #category : #declaring }
@@ -43,6 +45,12 @@ RPackageExtensions >> addExtension: anExtension [
 { #category : #importing }
 RPackageExtensions >> allExtensions [
 	^ extensions, imports
+]
+
+{ #category : #deleting }
+RPackageExtensions >> delete [
+
+	"extensions do: #delete"
 ]
 
 { #category : #declaring }
@@ -77,7 +85,13 @@ RPackageExtensions >> initializeFromPackage: aRPackage [
 
 { #category : #lookup }
 RPackageExtensions >> lookupMethod: aSymbol forBehavior: aBehavior [ 
-	self allExtensions do: [ :each | each methodNamed: aSymbol fromBehavior: aBehavior ifPresent: [ :it | ^ it ] ifAbsent: [ nil ] ].
+	self allExtensions
+		do: [ :each | each
+				methodNamed: aSymbol
+				fromBehavior: aBehavior
+				ifPresent: [ :it | ^ it ]
+				ifAbsent: [ nil ] ].
+	^ nil
 ]
 
 { #category : #importing }

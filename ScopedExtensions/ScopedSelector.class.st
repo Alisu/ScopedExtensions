@@ -39,6 +39,15 @@ ScopedSelector >> notUnderstoodBy: receiver withMessage: aMessage [
 	^ receiver perform: wrappedSelector withArguments: aMessage arguments
 ]
 
+{ #category : #'handling DNU' }
+ScopedSelector >> retryFor: anObject withMessage: aMessage [
+	(anObject class lookupSelector: wrappedSelector) ifNotNil: [ :method |
+		"se l f installAliasesFor : method ."
+		^ anObject perform: wrappedSelector withArguments: aMessage arguments ].
+
+	^ anObject doesNotUnderstand: aMessage
+]
+
 { #category : #accessing }
 ScopedSelector >> wrappedSymbol [
 	^ wrappedSelector

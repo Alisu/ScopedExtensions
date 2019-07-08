@@ -20,3 +20,9 @@ Symbol >> notUnderstoodBy: receiver withMessage: aMessage [
 		ifTrue: [ aMessage sentTo: self ]
 		ifFalse: [ resumeValue ]
 ]
+
+{ #category : #'*ScopedExtensions' }
+Symbol >> retryFor: anObject withMessage: aMessage [
+
+	^ anObject doesNotUnderstand: aMessage
+]
