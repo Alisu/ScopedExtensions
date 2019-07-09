@@ -153,11 +153,12 @@ Extension >> isImportedBy: aRPackage [
 { #category : #accessing }
 Extension >> methodNamed: aSymbol fromBehavior: aBehavior ifPresent: presentBlock ifAbsent: absentBlock [
 	
-	| method |
-	method := (aBehavior lookupSelector: aSymbol)
-		ifNil: [ ^ absentBlock value ].
-	1halt.
-	^ self methodNamed: aSymbol inBehavior: method origin ifPresent: presentBlock
+	self methodNamed: aSymbol inBehavior: aBehavior ifPresent: presentBlock.
+	"(aBehavior traitComposition traitProvidingSelector: aSymbol) ifNotNil: [ :trait | 
+		self methodNamed: aSymbol inBehavior: trait ifPresent: presentBlock ]."
+	^ aBehavior superclass 
+		ifNotNil: [ self methodNamed: aSymbol fromBehavior: aBehavior superclass ifPresent: presentBlock ifAbsent: absentBlock ]
+		ifNil: absentBlock
 ]
 
 { #category : #accessing }
